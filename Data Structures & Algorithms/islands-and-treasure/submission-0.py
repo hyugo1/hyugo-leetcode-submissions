@@ -1,0 +1,39 @@
+class Solution:
+    def islandsAndTreasure(self, grid: List[List[int]]) -> None:
+        ROWS = len(grid)
+        COLS = len(grid[0])
+        INF = 2147483647
+        visited = set()
+        queue = deque()
+
+        # -1 = water cell
+        # 0 = treasure chest
+     
+
+        def addRoom(r, c):
+            if (r < 0 or c < 0 or r >= ROWS or c >= COLS or (r, c) in visited or grid[r][c] == -1):
+                return
+
+            visited.add((r, c))
+            queue.append((r,c))
+
+
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] == 0:
+                    queue.append((r, c))
+                    visited.add((r, c))
+
+
+        dist = 0
+
+        while queue:
+            for i in range(len(queue)):
+                r, c = queue.popleft()
+                grid[r][c] = dist
+                addRoom(r + 1, c)
+                addRoom(r, c + 1)
+                addRoom(r - 1, c)
+                addRoom(r, c - 1)
+            dist += 1
+
