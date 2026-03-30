@@ -1,12 +1,16 @@
 class Solution:
-    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
-        dp = [False] * (len(s) + 1)
-        dp[len(s)] = True
+    def maxProduct(self, nums: List[int]) -> int:
+        positive = 1
+        negative = 1
+        res = max(nums)
+        for n in nums:
+            if n == 0:
+                positive = 1
+                negative = 1
+                continue
 
-        for i in range(len(s) - 1,-1, -1):
-            for w in wordDict:
-                if (i + len(w) <= len(s) and s[i: i + len(w)] == w):
-                    dp[i] = dp[i + len(w)]
-                if dp[i] == True:
-                    break
-        return dp[0]
+            temp = n * negative
+            negative = min(n * negative, n * positive, n)
+            positive = max(temp, n * positive, n)
+            res = max(res, negative, positive)
+        return res
